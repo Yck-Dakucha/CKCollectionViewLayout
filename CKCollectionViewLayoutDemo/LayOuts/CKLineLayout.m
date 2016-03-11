@@ -10,7 +10,7 @@
 @interface CKLineLayout ()
 
 @property (nonatomic, assign) BOOL isPageEnabled;
-@property (nonatomic, assign) CGFloat move_x;
+
 
 @end
 
@@ -19,7 +19,8 @@
 {
     self = [super init];
     if (self) {
-        _move_x = 0;
+        self.move_x             = 0;
+        self.scrollDirection    = UICollectionViewScrollDirectionHorizontal;
     }
     return self;
 }
@@ -31,12 +32,14 @@
  */
 - (void)prepareLayout {
     [super prepareLayout];
-    self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
+    CGFloat inset           = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;
+    self.sectionInset       = UIEdgeInsetsMake(0, inset, 0, inset);
+    self.minimumLineSpacing = 10;
+
     //确保第一个挤最后一个item在最中间
-    CGFloat inset = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;
-    self.sectionInset =UIEdgeInsetsMake(0, inset, 0, inset);
-    self.minimumLineSpacing = 20;
+//    if (self.move_x == 0.0 && self.collectionView.contentOffset.x != 0) {
+//        [self.collectionView setContentOffset:CGPointMake(self.move_x, 0) animated:YES];
+//    }
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
@@ -126,7 +129,8 @@
         }
     }
     proposedContentOffset.x += minSpacing;
-    return proposedContentOffset.x;
+    _move_x = proposedContentOffset.x;
+    return _move_x;
 }
 
 @end

@@ -37,9 +37,9 @@
     CGFloat collectinoCenterX = self.collectionView.frame.size.width * 0.5;
     CGFloat collectinoCenterY = self.collectionView.frame.size.height * 0.5;
     //半径
-    CGFloat radius = (self.collectionView.frame.size.height - 20) * 0.5;
+    CGFloat radius = (self.collectionView.frame.size.height - 80) * 0.5;
     //设置attributes
-    attributes.size = CGSizeMake(50, 50);
+    attributes.size = CGSizeMake(75, 75);
     if (count == 1) {
         attributes.center = CGPointMake(collectinoCenterX, collectinoCenterY);
     }else {

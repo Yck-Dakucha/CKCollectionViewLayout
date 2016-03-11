@@ -10,6 +10,8 @@
 
 @interface CKLineLayout : UICollectionViewFlowLayout
 
+@property (nonatomic, assign) CGFloat move_x;
+
 - (void)ck_setPageingEnable:(BOOL)isPagingEnabled;
 
 @end

@@ -58,6 +58,8 @@
     CKCardSliderCollectionCell *collectCell = (CKCardSliderCollectionCell *)cell;
     collectCell.backgroundColor = [UIColor blueColor];
     [collectCell ck_setCellTitle:[NSString stringWithFormat:@"%@",self.dataArray[indexPath.row]]];
+    collectCell.layer.borderColor = [UIColor whiteColor].CGColor;
+    collectCell.layer.borderWidth = 2;
     
 }
 #pragma mark -  Action
@@ -73,6 +75,7 @@
             self.pageingStack.alpha = 1.0;
         }];
         [self.collectionView setCollectionViewLayout:self.lineLayout animated:YES];
+        [self.collectionView setContentOffset:CGPointMake(self.lineLayout.move_x, 0)];
     }
     
 }
