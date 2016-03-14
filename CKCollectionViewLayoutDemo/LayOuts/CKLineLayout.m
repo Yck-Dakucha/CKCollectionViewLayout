@@ -9,8 +9,9 @@
 #import "CKLineLayout.h"
 @interface CKLineLayout ()
 
-@property (nonatomic, assign) BOOL isLayout;
-@property (nonatomic, assign) BOOL isPageEnabled;
+@property (nonatomic, assign) BOOL    isLayout;
+@property (nonatomic, assign) BOOL    isPageEnabled;
+@property (nonatomic, assign) CGFloat move_x;
 
 @end
 
@@ -92,6 +93,13 @@
         proposedContentOffset.x = [self ck_currentMove:proposedContentOffset];
     }
     
+    return proposedContentOffset;
+}
+/**
+ *  它的返回值决定了视图刷新后或者初始化后将要显示的位置，这里用来设置在切换后再切换回来仍然记录刚才位置
+ */
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset {
+    proposedContentOffset.x = self.move_x;
     return proposedContentOffset;
 }
 #pragma mark -  单页翻页效果

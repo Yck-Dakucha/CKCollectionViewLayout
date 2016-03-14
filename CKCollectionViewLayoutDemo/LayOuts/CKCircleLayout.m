@@ -44,9 +44,10 @@
     if (count == 1) {
         attributes.center = CGPointMake(collectinoCenterX, collectinoCenterY);
     }else {
-        CGFloat angle = (2 * M_PI / count) * indexPath.item;
-        CGFloat centerX = collectinoCenterX + radius * sin(angle);
-        CGFloat centerY = collectinoCenterY + radius * cos(angle);
+        //这里减去 M_PI / 2 是为了让第一个在最上边，因为第0个是0度，这是要把他调整为-90度，以此类推
+        CGFloat angle = (2 * M_PI / count) * indexPath.item - M_PI / 2;
+        CGFloat centerX = collectinoCenterX + radius * cos(angle);
+        CGFloat centerY = collectinoCenterY + radius * sin(angle);
         attributes.center = CGPointMake(centerX, centerY);
     }
     

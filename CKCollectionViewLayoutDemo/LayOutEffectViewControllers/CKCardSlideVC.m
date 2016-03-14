@@ -75,7 +75,6 @@
                 self.pageingStack.alpha = 1.0;
             }];
             [self.collectionView setCollectionViewLayout:self.lineLayout animated:YES];
-            [self.collectionView setContentOffset:CGPointMake(self.lineLayout.move_x, 0)];
             break;
         }
         case 1:
@@ -95,7 +94,6 @@
                     self.pageingStack.alpha = 0.0;
                 }];
             }
-//            self.collectionView.collectionViewLayout = nil;
             [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
             break;
         }
@@ -117,7 +115,7 @@
     if (!_lineLayout) {
         _lineLayout = [[CKLineLayout alloc] init];
         [_lineLayout ck_setPageingEnable:YES];
-        _lineLayout.itemSize = CGSizeMake(self.collectionView.frame.size.height - 20, self.collectionView.frame.size.height - 20);
+        _lineLayout.itemSize = CGSizeMake(self.collectionView.frame.size.height - 100, self.collectionView.frame.size.height - 20);
     }
     return _lineLayout;
 }

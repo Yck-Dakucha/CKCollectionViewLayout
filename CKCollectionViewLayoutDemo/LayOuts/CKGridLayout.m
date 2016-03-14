@@ -9,11 +9,20 @@
 #import "CKGridLayout.h"
 @interface CKGridLayout()
 
+@property (nonatomic, assign) CGFloat move_y;
 @property (nonatomic, strong) NSMutableArray<UICollectionViewLayoutAttributes *> *attributesArray;
 
 @end
 
 @implementation CKGridLayout
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.move_y = 0;
+    }
+    return self;
+}
 
 - (void)prepareLayout {
     [super prepareLayout];
@@ -91,6 +100,15 @@
     return self.attributesArray[indexPath.row];
     
 }
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset {
+    proposedContentOffset.y = self.move_y;
+    return proposedContentOffset;
+}
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+    self.move_y = proposedContentOffset.y;
+    return proposedContentOffset;
+}
+
 #pragma mark -  懒加载
 - (NSMutableArray *)attributesArray {
     if (!_attributesArray) {
