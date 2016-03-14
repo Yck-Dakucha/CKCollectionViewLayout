@@ -17,6 +17,7 @@
 @implementation CKCircleLayout
 
 - (void)prepareLayout {
+    [super prepareLayout];
     [self.attributesArray removeAllObjects];
     NSInteger count = [self.collectionView numberOfItemsInSection:0];
     for (int i = 0; i < count; i++) {
@@ -51,6 +52,9 @@
     
     return attributes;
     
+}
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
+    return YES;
 }
 
 #pragma mark -  懒加载

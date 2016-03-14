@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F40FE1BD1C926AD50031CAEF /* CKCircleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F40FE1BC1C926AD50031CAEF /* CKCircleLayout.m */; };
+		F43BE5181C965FE80098A2D1 /* CKGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F43BE5171C965FE80098A2D1 /* CKGridLayout.m */; };
 		F44A9A811C91088A00417181 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F44A9A801C91088A00417181 /* main.m */; };
 		F44A9A8A1C91088A00417181 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44A9A881C91088A00417181 /* Main.storyboard */; };
 		F44A9A8C1C91088A00417181 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44A9A8B1C91088A00417181 /* Assets.xcassets */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		F40FE1BB1C926AD50031CAEF /* CKCircleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKCircleLayout.h; sourceTree = "<group>"; };
 		F40FE1BC1C926AD50031CAEF /* CKCircleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKCircleLayout.m; sourceTree = "<group>"; };
+		F43BE5161C965FE80098A2D1 /* CKGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKGridLayout.h; sourceTree = "<group>"; };
+		F43BE5171C965FE80098A2D1 /* CKGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKGridLayout.m; sourceTree = "<group>"; };
 		F44A9A7C1C91088A00417181 /* CKCollectionViewLayoutDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CKCollectionViewLayoutDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F44A9A801C91088A00417181 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F44A9A891C91088A00417181 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -196,6 +199,8 @@
 				F4760E501C911B8000779529 /* CKLineLayout.m */,
 				F40FE1BB1C926AD50031CAEF /* CKCircleLayout.h */,
 				F40FE1BC1C926AD50031CAEF /* CKCircleLayout.m */,
+				F43BE5161C965FE80098A2D1 /* CKGridLayout.h */,
+				F43BE5171C965FE80098A2D1 /* CKGridLayout.m */,
 			);
 			path = LayOuts;
 			sourceTree = "<group>";
@@ -334,6 +339,7 @@
 				F4760E491C910D4700779529 /* CKCardSlideVC.m in Sources */,
 				F40FE1BD1C926AD50031CAEF /* CKCircleLayout.m in Sources */,
 				F44A9AB91C910A0A00417181 /* CKMainTableViewController.m in Sources */,
+				F43BE5181C965FE80098A2D1 /* CKGridLayout.m in Sources */,
 				F4760E4D1C911ABA00779529 /* CKCardSliderCollectionCell.m in Sources */,
 				F44A9A811C91088A00417181 /* main.m in Sources */,
 				F44A9AB51C91094100417181 /* AppDelegate.m in Sources */,

@@ -9,8 +9,8 @@
 #import "CKLineLayout.h"
 @interface CKLineLayout ()
 
+@property (nonatomic, assign) BOOL isLayout;
 @property (nonatomic, assign) BOOL isPageEnabled;
-
 
 @end
 
@@ -32,14 +32,12 @@
  */
 - (void)prepareLayout {
     [super prepareLayout];
-    CGFloat inset           = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;
-    self.sectionInset       = UIEdgeInsetsMake(0, inset, 0, inset);
-    self.minimumLineSpacing = 10;
-
-    //确保第一个挤最后一个item在最中间
-//    if (self.move_x == 0.0 && self.collectionView.contentOffset.x != 0) {
-//        [self.collectionView setContentOffset:CGPointMake(self.move_x, 0) animated:YES];
-//    }
+    if (!self.isLayout) {
+        CGFloat inset           = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;
+        self.sectionInset       = UIEdgeInsetsMake(0, inset, 0, inset);
+        self.minimumLineSpacing = 10;
+        self.isLayout = YES;
+    }
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
@@ -64,7 +62,6 @@
         CGFloat spacing = ABS(centerX - attributes.center.x);
         //根据间距算出缩放的比例
         CGFloat scale = 1 - spacing/self.collectionView.frame.size.width;
-        
         //设置缩放
         attributes.transform = CGAffineTransformMakeScale(scale, scale);
     }
@@ -106,7 +103,7 @@
         _move_x -= self.itemSize.width + self.minimumLineSpacing;
     }
     set_x = _move_x;
-    NSLog(@"set_x >>>>> %f",set_x);
+//    NSLog(@"set_x >>>>> %f",set_x);
     return set_x;
 }
 #pragma mark -  默认翻页效果
