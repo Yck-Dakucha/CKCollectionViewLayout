@@ -34,8 +34,8 @@
 - (void)prepareLayout {
     [super prepareLayout];
     if (!self.isLayout) {
-        CGFloat inset           = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;
-        self.sectionInset       = UIEdgeInsetsMake(0, inset, 0, inset);
+        CGFloat inset           = self.collectionView.frame.size.width * 0.5 - self.itemSize.width * 0.5;//这样设置是为了第一个及最后一个视图在collectionView的中间位置
+        self.sectionInset       = UIEdgeInsetsMake(0, inset, 0, inset);//section的偏移量（上左下右）
         self.minimumLineSpacing = 10;
         self.isLayout = YES;
     }
@@ -74,6 +74,7 @@
 - (void)ck_setPageingEnable:(BOOL)isPagingEnabled {
     _isPageEnabled = isPagingEnabled;
 }
+#pragma mark -  设置需要停留的位置
 /**
  *  它的返回值，就决定了collectionView停止滚动时的偏移量,这个方法在你手离开屏幕之前会调用，也就是cell即将停止滚动的时候
  *  这个方法返回的参数(CGPoint)proposedContentOffset，这是它本应该停留的位置，最终停留的的值。而
