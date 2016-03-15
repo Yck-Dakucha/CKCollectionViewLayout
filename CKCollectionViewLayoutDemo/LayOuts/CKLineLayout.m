@@ -55,7 +55,7 @@
     //先取出系统已经计算好的布局属性
     NSArray *array = [super layoutAttributesForElementsInRect:rect];
     
-    //计算collectionView最中心点的X坐标,这里的中心店需加上偏移量
+    //计算collectionView最中心点的X坐标,这里的中心点需加上偏移量
     CGFloat centerX = self.collectionView.frame.size.width * 0.5 + self.collectionView.contentOffset.x;
     
     for (UICollectionViewLayoutAttributes *attributes in array) {

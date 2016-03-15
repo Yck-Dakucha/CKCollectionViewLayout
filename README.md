@@ -3,7 +3,7 @@
 
 _ps：本文是参照简书<http://www.jianshu.com/p/83f2d6ac7e68>仿写学习使用自定义布局与流水布局的Demo，其中增加了部分内容。原作者已经讲述的非常清晰，非常感谢原作者做出的贡献。这里只做出遇到的而原文没有的事项_
 ###图例：  
-![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/Demo.gif)
+![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/Demo.gif =200x)
 
 ###增加的内容有
 * `记录浏览位置，在切换浏览方式时记录了浏览位置（各个方式之间不通）`
@@ -16,7 +16,7 @@ CollectionView可以进行很多种形式的自定义，而且支持水平滚动
 
 首先我们要知道的是`UICollectionViewFlowLayout`是继承自`UICollectionViewLayout`的，让我们去`UICollectionViewLayout`中看看有什么方法，自定义布局只要理解几个方法的作用就可以为所欲为了  
 
-![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/CollectionViewLayoutMethod.png)  
+![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/CollectionViewLayoutMethod.png =600x)  
 
 其中较为常用的方法已在图中标注出来，这些方法都是干什么用的呢？
 
@@ -40,7 +40,7 @@ if (!self.isLayout) {
 
 * `- (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect` 
 
-我们现理解`UICollectionViewLayoutAttributes`,  
+我们先来理解`UICollectionViewLayoutAttributes`,  
 
 1. 它是用来描述布局属性的
 2. 每个cell都对应自己的UICollectionViewLayoutAttributes对象
@@ -90,7 +90,98 @@ if (!self.isLayout) {
 * sectionInset 决定了collectionView的section的偏移量，偏移方向是上左下右
 * 其他属性不一一解释了
 
-我们要做到水平布局，需要把collectionView的高度调小，在高度不足显示两排的时候，就会变成了水平的  
+我们要做到水平布局，需要把collectionView的高度调小，在高度不足显示两排的时候，就会变成了水平的，如图：  
+![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/LineLayout1.png)   
+由于每个cell都需要不在视图中心的时候进行缩放，所以我们直接可以：
+  
+```
+- (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
+    //先取出系统已经计算好的布局属性
+    NSArray *array = [super layoutAttributesForElementsInRect:rect];
+    
+    //计算collectionView最中心点的X坐标,这里的中心点需加上偏移量
+    CGFloat centerX = self.collectionView.frame.size.width * 0.5 + self.collectionView.contentOffset.x;
+    
+    for (UICollectionViewLayoutAttributes *attributes in array) {
+        //原cell的中心与要显示的中心及collectionView的最中心点之间的距离
+        CGFloat spacing = ABS(centerX - attributes.center.x);
+        //根据间距算出缩放的比例
+        CGFloat scale = 1 - spacing/self.collectionView.frame.size.width;
+        //设置缩放
+        attributes.transform = CGAffineTransformMakeScale(scale, scale);
+    }
+    return array;
+}
+```
+这里之前提到的文章中的图分容易理解中心点坐标这里直接拿过来用了（侵删）  
+
+![](https://raw.githubusercontent.com/Yck-Dakucha/CKCollectionViewLayout/master/Picture/LineLayoutCenter.png) 
+
+* 计算collectionView中心点的x值
+  * 要记住collectionView的坐标原点是以内容contentSize的原点为原点
+  * 计算collectionView中心点的x值，千万不要用collectionView的宽度除以2。而是用  collectionView的偏移量加上collectionView宽度的一半
+  * 坐标原点弄错了就没有可比性了，因为后面要判断cell的中心点与collectionView中心点的差值
+* ABS(A)取绝对值
+* 我们再根据间距值delta去算cell的缩放比例scale
+  * 间距值delta和缩放比例scale是成反比的
+  * 间距值delta的范围为0--self.collectionView.frame.size.width * 0.5  
+  
+为了保证每次拖动后都有一个视图在最中心，所以我们要重写Layout将要停留位置的方法  
+
+```
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+    proposedContentOffset.y = 0;
+    if (_isPageEnabled) {
+        proposedContentOffset.x = [self ck_pageEnabledMove:proposedContentOffset];
+    }else {
+        proposedContentOffset.x = [self ck_currentMove:proposedContentOffset];
+    }
+    
+    return proposedContentOffset;
+}
+```
+这里的_isPageEnabled是为了区分是单页翻页效果还是顺滑的翻页效果，其中：  
+
+```
+ #pragma mark -  单页翻页效果
+- (CGFloat)ck_pageEnabledMove:(CGPoint)proposedContentOffset {
+    CGFloat set_x = proposedContentOffset.x;
+    if (set_x > _move_x) {
+        _move_x += self.itemSize.width + self.minimumLineSpacing;
+    }else if (set_x < _move_x){
+        _move_x -= self.itemSize.width + self.minimumLineSpacing;
+    }
+    set_x = _move_x;
+//    NSLog(@"set_x >>>>> %f",set_x);
+    return set_x;
+}
+ #pragma mark -  默认翻页效果
+- (CGFloat)ck_currentMove:(CGPoint)proposedContentOffset {
+    //最终显示的区域
+    CGRect lastRect;
+    lastRect.origin.x = proposedContentOffset.x;
+    lastRect.origin.y = 0;
+    lastRect.size = self.collectionView.frame.size;
+    
+    //获取Super计算好的布局属性
+    NSArray *array = [super layoutAttributesForElementsInRect:lastRect];
+    //计算collectionView最中心点的X坐标,这里的中心店需加上偏移量
+    CGFloat centerX = self.collectionView.frame.size.width * 0.5 + proposedContentOffset.x;
+    //存放最小的间距值
+    CGFloat minSpacing = MAXFLOAT;
+    for (UICollectionViewLayoutAttributes *attributes in array) {
+        if (ABS(minSpacing) > ABS(attributes.center.x - centerX)) {
+            minSpacing = attributes.center.x - centerX;
+        }
+    }
+    proposedContentOffset.x += minSpacing;
+    _move_x = proposedContentOffset.x;
+    return _move_x;
+}
+
+```
+关键代码就在这里，简书中已经很详细的解释了每一步，环形布局与格子布局逻辑大致相同，请参看代码或者简书。
+
 
 
  
